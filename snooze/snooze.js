@@ -1,7 +1,4 @@
-const fs = require('fs');
 const chalk = require('chalk');
-const setConfigArgs = require('gar')(process.argv.slice(2));
-
 const { email, apiKey, timeZone } = require('../config/credentials.json');
 
 class Snooze {
@@ -20,7 +17,6 @@ class Snooze {
       sm: this.Maintenance.startMaintenance,
       em: this.Maintenance.endMaintenance,
       lm: this.Maintenance.listMaintenanceWindows,
-      setConfig: this.setConfig.bind(this),
       help: Snooze.help,
     };
   }
@@ -47,21 +43,7 @@ class Snooze {
     }
   }
 
-  setConfig() {
-    const data = {
-      email: setConfigArgs.email,
-      apiKey: setConfigArgs.apiKey,
-      timeZone: setConfigArgs.timeZone,
-    };
 
-    const writeStream = fs.createWriteStream('config/credentials.json');
-
-    writeStream.write(JSON.stringify(data, null, 2), function(err) {
-      if (err) return console.log(err);
-    });
-
-    writeStream.end();
-  }
 
   static help() {
     console.log(`
