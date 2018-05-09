@@ -1,6 +1,6 @@
 {
   "name": "pd-snooze",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "pager duty maintenance cli",
   "main": "index.js",
   "author": "NickLewry",
@@ -21,12 +21,12 @@
     "test": "jest",
     "format": "prettier --write './**/*.js'"
   },
-  "bin" : "./index.js",
-  "engines" : {
-    "node" : ">=8"
+  "bin": "./index.js",
+  "engines": {
+    "node": ">=8"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/NickLewry/pd-snooze"
+    "type": "git",
+    "url": "https://github.com/NickLewry/pd-snooze"
   }
 }
