@@ -7,7 +7,9 @@ if (fs.existsSync('./config/credentials.json')) {
   const Snooze = require('./snooze/snooze');
   new Snooze().init(cliFlags);
 } else if (cliFlags.setConfig) {
-  setConfig(cliFlags)
+  setConfig(cliFlags);
 } else {
-  console.log('credentials not set, please run pd-snooze --help to get started');
+  console.log(
+    'credentials not set, please run pd-snooze --help to get started'
+  );
 }

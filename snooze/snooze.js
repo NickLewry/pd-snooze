@@ -43,8 +43,6 @@ class Snooze {
     }
   }
 
-
-
   static help() {
     console.log(`
 Setup:
