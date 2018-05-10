@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const setConfig = flags => {
   const data = {
@@ -7,13 +8,15 @@ const setConfig = flags => {
     timeZone: flags.timeZone,
   };
 
-  const writeStream = fs.createWriteStream('./config/credentials.json');
+  fs.writeFile(
+    path.join(__dirname, 'config/credentials.json'),
+    JSON.stringify(data, null, 2),
+    err => {
+      if (err) throw err;
 
-  writeStream.write(JSON.stringify(data, null, 2), function(err) {
-    if (err) return console.log(err);
-  });
-
-  writeStream.end();
+      console.log('Credentials stored');
+    }
+  );
 };
 
 module.exports = setConfig;
