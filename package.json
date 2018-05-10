@@ -1,6 +1,6 @@
 {
   "name": "pd-snooze",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "pager duty maintenance cli",
   "main": "index.js",
   "author": "NickLewry",
