@@ -4,11 +4,11 @@ A command line tool to put services in and out of maintenance mode in Pager Duty
 
 ### Setup:
 ```sh
- pd-snooze --setConfig apiKey YOUR_APIKEY email YOUR_EMAIL timeZone YOUR_TIMEZONE     // Sets config to be able to access pager duty api.
+ pd-snooze --setConfig --apiKey YOUR_APIKEY --email YOUR_EMAIL --timeZone YOUR_TIMEZONE     // Sets config to be able to access pager duty api.
 ```
 Example Usage:
 ```sh
-pd-snooze --setConfig apiKey example-api-key email email@company.org timeZone Europe/London
+pd-snooze --setConfig --apiKey example-api-key --email email@company.org --timeZone Europe/London
 ```
 
 

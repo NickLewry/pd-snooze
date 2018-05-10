@@ -48,10 +48,10 @@ class Snooze {
   static help() {
     console.log(`
 Setup:
---setConfig apiKey <apiKey> email <email> timeZone <timeZone>       Sets config to be able to access pager duty api.
+--setConfig --apiKey <apiKey> --email <email> --timeZone <timeZone>       Sets config to be able to access pager duty api.
 
 Example Usage:
---setConfig apiKey example-api-key email email@company.org timeZone Europe/London
+--setConfig --apiKey example-api-key --email email@company.org --timeZone Europe/London
 
 Commands:
   --ls                          List all services that are registered with your apiKey on Pager Duty.
