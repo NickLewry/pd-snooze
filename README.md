@@ -2,6 +2,9 @@
 
 A command line tool to put services in and out of maintenance mode in Pager Duty.
 
+### Requirements:
+**Node version: >= 8.**
+
 ### Setup:
 ```sh
  pd-snooze --setConfig --apiKey YOUR_APIKEY --email YOUR_EMAIL --timeZone YOUR_TIMEZONE     // Sets config to be able to access pager duty api.

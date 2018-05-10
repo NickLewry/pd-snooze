@@ -45,6 +45,9 @@ class Snooze {
 
   static help() {
     console.log(`
+Requirements:
+- Node version: >= 8.
+
 Setup:
 --setConfig --apiKey <apiKey> --email <email> --timeZone <timeZone>       Sets config to be able to access pager duty api.
 
