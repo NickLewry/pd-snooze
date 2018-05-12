@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 const program = require('commander');
 
 const help = require('./src/help');
-const setConfig = require('./src/setConfig');
+const Config = require('./src/config/config');
 const Snooze = require('./src/snooze/snooze');
 
+const config = new Config();
+
 if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
+  program.version('2.0.0', '-v, --version');
+
   program
     .command('set-config')
     .description('Create the config required to interact with PagerDuty api')
@@ -16,13 +21,20 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     .option('--timezone <TIMEZONE>', 'your time-zone')
     .action(({ apikey, email, timezone }) => {
       if (apikey && email && timezone) {
-        setConfig({ apikey, email, timezone });
+        config.setConfig({ apikey, email, timezone });
+      } else {
+        console.log(
+          chalk.red(
+            'Error setting config, ensure you are setting the config correctly'
+          )
+        );
+        program.help();
       }
     });
 } else {
   const snooze = new Snooze();
 
-  program.version('1.0.6', '-v, --version');
+  program.version('2.0.0', '-v, --version');
 
   program
     .command('set-config')
@@ -34,12 +46,22 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     .option('--timezone <TIMEZONE>', 'your time-zone')
     .action(({ apikey, email, timezone }) => {
       if (apikey && email && timezone) {
-        setConfig({ apikey, email, timezone });
+        config.setConfig({ apikey, email, timezone });
       } else {
-        console.log(`
-        please ensure you are setting credentials correctly, run --help
-        `);
+        console.log(
+          chalk.red(
+            'Error setting config, ensure you are setting the config correctly'
+          )
+        );
+        program.help();
       }
+    });
+
+  program
+    .command('current-config')
+    .description('Output current config')
+    .action(() => {
+      config.logConfig();
     });
 
   program
@@ -70,7 +92,9 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
         });
       } else {
         console.log(
-          'Missing flag, specify if you want to start all services or a single service.'
+          chalk.red(
+            'Missing flag, specify if you want to start all services or a single service.'
+          )
         );
         program.help();
       }
@@ -103,7 +127,9 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
         });
       } else {
         console.log(
-          'Missing flag, specify if you want to end all windows or a window for a single service.'
+          chalk.red(
+            'Missing flag, specify if you want to end all maintenance windows or a maintenance window for a single service.'
+          )
         );
         program.help();
       }
@@ -120,7 +146,7 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
       } else if (maintenance) {
         snooze.init({ option: 'maintenance' });
       } else {
-        console.log('Missing flag, specify what you want to list.');
+        console.log(chalk.red('Missing flag, specify what you want to list.'));
         program.help();
       }
     });
