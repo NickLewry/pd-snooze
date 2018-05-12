@@ -6,24 +6,26 @@ class Snooze {
     Utils = require('../utils/utils'),
     Services = require('../services/services'),
     Maintenance = require('../maintenance/maintenance'),
-    log = require('../utils/log')
+    log = require('../utils/log'),
+    help = require('../help')
   ) {
     this.utils = new Utils({ email, apiKey, timeZone });
     this.Services = new Services(this.utils);
     this.Maintenance = new Maintenance(this.utils);
     this.log = log;
+    this.help = help;
     this.handlers = {
       ls: this.Services.listServices,
       sm: this.Maintenance.startMaintenance,
       em: this.Maintenance.endMaintenance,
       lm: this.Maintenance.listMaintenanceWindows,
-      help: Snooze.help,
+      help: this.help,
     };
   }
 
   init(cliFlags) {
     if (Object.keys(cliFlags).length <= 1) {
-      Snooze.help();
+      this.help();
       return;
     }
 
@@ -41,33 +43,6 @@ class Snooze {
         this.handlers[flag](cliFlags);
       }
     }
-  }
-
-  static help() {
-    console.log(`
-Requirements:
-- Node version: >= 8.
-
-Setup:
---setConfig --apiKey <apiKey> --email <email> --timeZone <timeZone>       Sets config to be able to access pager duty api.
-
-Example Usage:
---setConfig --apiKey example-api-key --email email@company.org --timeZone Europe/London
-
-Commands:
-  --ls                          List all services that are registered with your apiKey on Pager Duty.
-  --lm                          List all open maintenance windows.
-  --sm                          Starts a maintenance window for all services.
-  --sm <service_name>           Starts a maintenance window for the service name provided.
-  --em                          Ends all open maintenance windows.
-  --em <service_name>           Ends the maintenance window that contains the service name provided.
-
-Additional Flags:
-  -d <min>                      Sets the duration of the maintenance window in minutes, default is 30.
-  
-Example Usage:
-  --sm config-service -d 45     Puts config-service into a maintenance window for 45min 
-      `);
   }
 }
 

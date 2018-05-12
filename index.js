@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
+const help = require('./help');
 const setConfig = require('./setConfig');
 const cliFlags = require('gar')(process.argv.slice(2));
 
@@ -11,7 +12,5 @@ if (fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
 } else if (cliFlags.setConfig) {
   setConfig(cliFlags);
 } else {
-  console.log(
-    'credentials not set, please run pd-snooze --help to get started'
-  );
+  help();
 }
