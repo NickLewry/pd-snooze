@@ -1,8 +1,6 @@
 class Utils {
-  constructor({ email, apiKey, timeZone }) {
-    this.apiKey = apiKey;
-    this.email = email;
-    this.timeZone = timeZone;
+  constructor(config = require('../../config/credentials.json')) {
+    this.config = config;
     this.buildRequest = this.buildRequest.bind(this);
   }
 
@@ -16,40 +14,40 @@ class Utils {
       .slice(0, -1);
   }
 
-  static getMaintenancePayload(maintenanceServices, minutes = 30) {
+  static getMaintenancePayload(maintenanceServices, duration = 30) {
     const startDate = new Date();
     return {
       maintenance_window: {
         type: 'maintenance_window',
         start_time: startDate,
-        end_time: new Date(startDate.getTime() + minutes * 60000),
+        end_time: new Date(startDate.getTime() + duration * 60000),
         services: maintenanceServices,
       },
     };
   }
 
-  buildRequest({ type, maintenanceServices, id, minutes }) {
+  buildRequest({ type, maintenanceServices, id, duration }) {
     const qs = {
-      time_zone: this.timeZone,
+      time_zone: this.config.timeZone,
       filter: 'open',
     };
 
     const options = {
-      ls: {
+      services: {
         path: 'services',
         method: 'GET',
       },
-      mw: {
+      maintenance: {
         path: 'maintenance_windows',
         method: 'GET',
       },
-      sm: {
+      start: {
         path: 'maintenance_windows',
         method: 'POST',
         payload: () =>
-          Utils.getMaintenancePayload(maintenanceServices, minutes),
+          Utils.getMaintenancePayload(maintenanceServices, duration),
       },
-      em: {
+      end: {
         path: `maintenance_windows/${id}`,
         method: 'DELETE',
       },
@@ -63,8 +61,8 @@ class Utils {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/vnd.pagerduty+json;version=2',
-        Authorization: `Token token=${this.apiKey}`,
-        From: this.email,
+        Authorization: `Token token=${this.config.apiKey}`,
+        From: this.config.email,
       },
     };
 

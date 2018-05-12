@@ -1,37 +1,73 @@
 # pd-snooze
 
-A command line tool to put services in and out of maintenance mode in Pager Duty.
+A command line tool to put services in and out of maintenance mode in PagerDuty.
 
 ### Requirements:
 **Node version: >= 8.**
 
 ### Setup:
 ```sh
- pd-snooze --setConfig --apiKey YOUR_APIKEY --email YOUR_EMAIL --timeZone YOUR_TIMEZONE     // Sets config to be able to access pager duty api.
-```
-Example Usage:
-```sh
-pd-snooze --setConfig --apiKey example-api-key --email email@company.org --timeZone Europe/London
+ pd-snooze set-config --apiKey YOUR_APIKEY --email YOUR_EMAIL --timezone YOUR_TIMEZONE
 ```
 
 
 ### Commands:
 ```
-  --ls                          List all services that are registered with your apiKey on Pager Duty.
-  --lm                          List all open maintenance windows.
-  --sm                          Starts a maintenance window for all services.
-  --sm <service_name>           Starts a maintenance window for the service name provided.
-  --em                          Ends all open maintenance windows.
-  --em <service_name>           Ends the maintenance window that contains the service name provided.
+set-config [options]    Create the config required to interact with the PagerDuty API.
+list [options]          List all services or open maintenance windows.
+start [options]         Put all services or a particular service into maintenance mode.
+end [options]           End all maintenance windows or a maintenance window containing a particular service.
 ```
 
 ### Additional Flags:
 ```
--d <min>                      // Sets the duration of the maintenance window in minutes, default is 30.
+-d <min>    Sets the duration of the maintenance window in minutes, default is 30.
 ```
   
-Example Usage:
-```sh
-pd-snooze --sm config-service -d 45     // Puts config-service into a maintenance window for 45min
+  
+### Example Usage:
+#### Output current version:
+```
+pd-snooze -v || --version
+
+```
+#### Output help:
+```
+pd-snooze -h || --help
+
+```
+### Setting your config:
+```
+pd-snooze set-config --apiKey example-api-key --email email@company.org --timezone Europe/London
+```
+#### List services:
+```
+pd-snooze list -s || --services
+
+```
+#### List maintenance windows:
+```
+pd-snooze list -m || --maintenance
+
+```
+#### Put all services into maintenance:
+```
+pd-snooze start -a || --all
+
+```
+#### Put a single service into maintenance:
+```
+pd-snooze start -s <SERVICE_NAME> || --service <SERVICE_NAME>
+
+```
+#### End all maintenance windows:
+```
+pd-snooze end -a || --all
+
+```
+#### End a maintenance window containing the specified service:
+```
+pd-snooze end -s <SERVICE_NAME> || --service <SERVICE_NAME>
+
 ```
    

@@ -115,7 +115,7 @@ describe('Maintenance', () => {
       MockDate.set(timestamp);
 
       const maintenance = new Maintenance(utils, logSpy, fetchSpy);
-      await maintenance.startMaintenance({ am: true });
+      await maintenance.startMaintenance({ value: 'all' });
       expect(fetchSpy).toBeCalledWith(
         'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
         {
@@ -140,7 +140,7 @@ describe('Maintenance', () => {
       MockDate.set(timestamp);
 
       const maintenance = new Maintenance(utils, logSpy, fetchSpy);
-      await maintenance.startMaintenance({ sm: 'user-service' });
+      await maintenance.startMaintenance({ value: 'user-service' });
 
       expect(fetchSpy.mock.calls.length).toBe(2);
       expect(fetchSpy.mock.calls[1]).toEqual([
@@ -166,7 +166,7 @@ describe('Maintenance', () => {
   describe('endMaintenance', () => {
     it('ends all open maintenance windows', async () => {
       const maintenance = new Maintenance(utils, logSpy, fetchSpy);
-      await maintenance.endMaintenance({ ea: true });
+      await maintenance.endMaintenance({ value: 'all' });
 
       expect(fetchSpy.mock.calls.length).toBe(3);
       expect(fetchSpy.mock.calls[1]).toEqual([
@@ -202,7 +202,7 @@ describe('Maintenance', () => {
 
     it('ends a maintenance window for a specific service', async () => {
       const maintenance = new Maintenance(utils, logSpy, fetchSpy);
-      await maintenance.endMaintenance({ em: 'config-service' });
+      await maintenance.endMaintenance({ value: 'config-service' });
 
       expect(fetchSpy.mock.calls.length).toBe(2);
       expect(fetchSpy.mock.calls[1]).toEqual([

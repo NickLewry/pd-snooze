@@ -67,7 +67,7 @@ describe('Utils', () => {
       });
     });
     it('builds the correct GET request for listing all services', () => {
-      expect(utils.buildRequest({ type: 'ls' })).toEqual({
+      expect(utils.buildRequest({ type: 'services' })).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
           Authorization: 'Token token=test-api-key',
@@ -81,7 +81,7 @@ describe('Utils', () => {
     });
 
     it('builds the correct GET request for listing all maintenance windows', () => {
-      expect(utils.buildRequest({ type: 'mw' })).toEqual({
+      expect(utils.buildRequest({ type: 'maintenance' })).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
           Authorization: 'Token token=test-api-key',
@@ -105,7 +105,7 @@ describe('Utils', () => {
           id: 'analyticsId',
         },
       ];
-      expect(utils.buildRequest({ type: 'sm', maintenanceServices })).toEqual({
+      expect(utils.buildRequest({ type: 'start', maintenanceServices })).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
           Authorization: 'Token token=test-api-key',
@@ -123,7 +123,7 @@ describe('Utils', () => {
 
     it('builds the correct DELETE request for ending a maintenance window', () => {
       expect(
-        utils.buildRequest({ type: 'em', id: 'testMaintenaceWindow' })
+        utils.buildRequest({ type: 'end', id: 'testMaintenaceWindow' })
       ).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',

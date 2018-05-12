@@ -17,7 +17,7 @@ class MaintenanceHandler {
   }
 
   async getMaintenanceWindows() {
-    const payload = this.utils.buildRequest({ type: 'mw' });
+    const payload = this.utils.buildRequest({ type: 'maintenance' });
     const request = await this.makeRequest(payload.uri, payload);
 
     if (request && request.json) {
@@ -42,18 +42,18 @@ class MaintenanceHandler {
     }
   }
 
-  async startMaintenance({ sm, d }) {
+  async startMaintenance({value, duration }) {
     const services = await this.services.getServices();
     const servicesPayload =
-      typeof sm === 'string'
-        ? this.services.validateService(services, sm)
-        : services;
+      value === 'all'
+        ? services
+        : this.services.validateService(services, value);
 
     if (!servicesPayload) return;
 
     const maintenancePayload = this.utils.buildRequest({
-      type: 'sm',
-      minutes: d,
+      duration,
+      type: 'start',
       maintenanceServices: servicesPayload.map(({ id }) => ({
         id,
         type: 'service_reference',
@@ -63,16 +63,16 @@ class MaintenanceHandler {
     await this.makeRequest(maintenancePayload.uri, maintenancePayload);
   }
 
-  async endMaintenance({ em }) {
+  async endMaintenance({ value }) {
     const maintenanceWindows = await this.getMaintenanceWindows();
     let openWindows = maintenanceWindows;
 
-    if (typeof em === 'string') {
+    if (value !== 'all') {
       const mappedWindows = maintenanceWindows.map(({ id, services }) => ({
         id,
         name: services[0].summary,
       }));
-      openWindows = this.services.validateService(mappedWindows, em);
+      openWindows = this.services.validateService(mappedWindows, value);
       if (!openWindows) return;
     }
 
@@ -83,7 +83,7 @@ class MaintenanceHandler {
 
     await Promise.all(
       openWindows.map(async ({ id }) => {
-        const maintenancePayload = this.utils.buildRequest({ type: 'em', id });
+        const maintenancePayload = this.utils.buildRequest({ type: 'end', id });
         return await this.makeRequest(
           maintenancePayload.uri,
           maintenancePayload

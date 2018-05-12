@@ -28,7 +28,7 @@ class Services {
   }
 
   async getServices() {
-    const payload = this.utils.buildRequest({ type: 'ls' });
+    const payload = this.utils.buildRequest({ type: 'services' });
     try {
       const request = await this.fetch(payload.uri, payload);
       const { services } = await request.json();

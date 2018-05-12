@@ -4,7 +4,7 @@ Requirements:
 - Node version: >= 8.
 
 Setup:
---setConfig --apiKey <apiKey> --email <email> --timeZone <timeZone>       Sets config to be able to access pager duty api.
+--setConfig --apiKey <apiKey> --email <email> --timezone <timezone>
 
 Example Usage:
 --setConfig --apiKey example-api-key --email email@company.org --timeZone Europe/London
