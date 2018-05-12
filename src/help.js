@@ -1,28 +1,19 @@
 const help = () => {
-  console.log(`
-Requirements:
-- Node version: >= 8.
-
-Setup:
---setConfig --apiKey <apiKey> --email <email> --timezone <timezone>
-
-Example Usage:
---setConfig --apiKey example-api-key --email email@company.org --timeZone Europe/London
-
-Commands:
-  --ls                          List all services that are registered with your apiKey on Pager Duty.
-  --lm                          List all open maintenance windows.
-  --sm                          Starts a maintenance window for all services.
-  --sm <service_name>           Starts a maintenance window for the service name provided.
-  --em                          Ends all open maintenance windows.
-  --em <service_name>           Ends the maintenance window that contains the service name provided.
-
-Additional Flags:
-  -d <min>                      Sets the duration of the maintenance window in minutes, default is 30.
+  console.log(`    
+  Setup:
   
-Example Usage:
-  --sm config-service -d 45     Puts config-service into a maintenance window for 45min 
-      `);
+    pd-snooze set-config --apiKey example-api-key --email email@company.org --timezone Europe/London
+  
+  Usage:
+  
+    pd-snooze list -s || --services                                   List services
+    pd-snooze list -m || --maintenance                                List maintenance windows   
+    pd-snooze end -a || --all                                         End all maintenance windows    
+    pd-snooze end -s || --service <NAME>                              End a maintenance window containing the specified service   
+    pd-snooze start -a || --all [-d || --duration <MIN>]              Put all services into maintenance with optional duration   
+    pd-snooze start -s || --service <NAME> [-d || --duration <MIN>]   Put a single service into maintenance with optional duration
+    
+`);
 };
 
 module.exports = help;

@@ -23,9 +23,6 @@ end [options]           End all maintenance windows or a maintenance window cont
 ```
 -d <min>    Sets the duration of the maintenance window in minutes, default is 30.
 ```
-  
-  
-### Example Usage:
 #### Output current version:
 ```
 pd-snooze -v || --version
@@ -40,6 +37,7 @@ pd-snooze -h || --help
 ```
 pd-snooze set-config --apiKey example-api-key --email email@company.org --timezone Europe/London
 ```
+### Example Usage:
 #### List services:
 ```
 pd-snooze list -s || --services
@@ -52,12 +50,12 @@ pd-snooze list -m || --maintenance
 ```
 #### Put all services into maintenance:
 ```
-pd-snooze start -a || --all
+pd-snooze start -a || --all [-d || --duration <MIN>]
 
 ```
 #### Put a single service into maintenance:
 ```
-pd-snooze start -s <SERVICE_NAME> || --service <SERVICE_NAME>
+pd-snooze start -s || --service <SERVICE_NAME> [-d || --duration <MIN>]
 
 ```
 #### End all maintenance windows:
@@ -67,7 +65,7 @@ pd-snooze end -a || --all
 ```
 #### End a maintenance window containing the specified service:
 ```
-pd-snooze end -s <SERVICE_NAME> || --service <SERVICE_NAME>
+pd-snooze end -s || --service <SERVICE_NAME>
 
 ```
    

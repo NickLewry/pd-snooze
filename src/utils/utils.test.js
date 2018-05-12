@@ -105,7 +105,9 @@ describe('Utils', () => {
           id: 'analyticsId',
         },
       ];
-      expect(utils.buildRequest({ type: 'start', maintenanceServices })).toEqual({
+      expect(
+        utils.buildRequest({ type: 'start', maintenanceServices })
+      ).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
           Authorization: 'Token token=test-api-key',

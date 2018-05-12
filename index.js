@@ -126,6 +126,7 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     });
 }
 
+program.on('--help', () => help());
 program.parse(process.argv);
 
 if (!program.args.length) help();

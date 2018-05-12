@@ -42,7 +42,7 @@ class MaintenanceHandler {
     }
   }
 
-  async startMaintenance({value, duration }) {
+  async startMaintenance({ value, duration }) {
     const services = await this.services.getServices();
     const servicesPayload =
       value === 'all'
