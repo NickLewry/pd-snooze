@@ -61,7 +61,28 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     .command('current-config')
     .description('Output current config')
     .action(() => {
-      config.logConfig();
+      config.getConfig();
+    });
+
+  program
+    .command('update-config')
+    .description(
+      'Update single or multiple values in the config.'
+    )
+    .option('--apikey <APIKEY>', 'your apiKey')
+    .option('--email <EMAIL>', 'your email')
+    .option('--timezone <TIMEZONE>', 'your time-zone')
+    .action(({ apikey, email, timezone }) => {
+      if (apikey || email || timezone) {
+        config.updateConfig({ apikey, email, timezone }).catch(console.log);
+      } else {
+        console.log(
+          chalk.red(
+            'Error updating config, ensure you are passing the correct flags and values'
+          )
+        );
+        program.help();
+      }
     });
 
   program

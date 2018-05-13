@@ -5,6 +5,18 @@ A command line tool to put services in and out of maintenance mode in PagerDuty.
 ### Requirements:
 **Node version: >= 8.**
 
+### Install:
+#### Yarn
+```
+yarn global add pd-snooze
+
+```
+#### NPM
+```
+npm install -g pd-snooze
+
+```
+
 ### Setup:
 ```
  pd-snooze set-config --apiKey YOUR_APIKEY --email YOUR_EMAIL --timezone YOUR_TIMEZONE
@@ -13,10 +25,11 @@ A command line tool to put services in and out of maintenance mode in PagerDuty.
 
 ### Commands:
 ```
-set-config [options]    Create the config required to interact with the PagerDuty API.
-list [options]          Output all services or open maintenance windows.
-start [options]         Put all services or a particular service into maintenance mode.
-end [options]           End all maintenance windows or a maintenance window containing a particular service.
+set-config [options]        Create the config required to interact with the PagerDuty API.
+update-config [options]     Update single or multiple values in the config.
+list [options]              Output all services or open maintenance windows.
+start [options]             Put all services or a particular service into maintenance mode.
+end [options]               End all maintenance windows or a maintenance window containing a particular service.
 ```
 
 ### Additional Flags:
@@ -42,6 +55,10 @@ pd-snooze set-config --apiKey example-api-key --email email@company.org --timezo
 ```
 pd-snooze current-config
 
+```
+#### Update config:
+```
+pd-snooze update-config --apiKey <NEW_APIKEY>
 ```
 #### Output services:
 ```

@@ -31,4 +31,29 @@ describe('Config', () => {
       }
     );
   });
+
+  it('updates the config with the keys provided after config has been set', async () => {
+    const config = new Config();
+    config.setConfig({
+      email: 'testEmail',
+      apikey: 'testApiKey',
+      timezone: 'testTimeZone',
+    });
+
+    await config.updateConfig({
+      timezone: 'updatedTimeZone',
+    });
+
+    fs.readFile(
+      path.join(__dirname, '../../config/credentials.json'),
+      (err, data) => {
+        expect(JSON.parse(data.toString())).toEqual({
+          email: 'testEmail',
+          apiKey: 'testApiKey',
+          timeZone: 'updatedTimeZone',
+        });
+      }
+    );
+
+  })
 });
