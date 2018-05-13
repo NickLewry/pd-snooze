@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const Table = require('cli-table');
 
 class MaintenanceHandler {
   constructor(
@@ -27,18 +28,25 @@ class MaintenanceHandler {
   }
 
   async listMaintenanceWindows() {
+    const table = new Table({
+      head: ['Id', 'Services', 'Maintenance-Start', 'Maintenance-End'],
+    });
     const windows = await this.getMaintenanceWindows();
     if (!windows.length) {
-      this.log('no open maintenance windows');
+      this.log(`
+        No open maintenance windows
+      `);
     } else {
-      this.log(
-        windows.map(({ id, start_time, end_time, services }) => ({
+      windows.forEach(({ id, start_time, end_time, services }) =>
+        table.push([
           id,
+          services.map(service => service.summary).join(', '),
           start_time,
           end_time,
-          services: services[0],
-        }))
+        ])
       );
+
+      this.log(table.toString());
     }
   }
 
@@ -77,7 +85,9 @@ class MaintenanceHandler {
     }
 
     if (!openWindows.length) {
-      this.log('No open maintenance windows');
+      this.log(`
+        No open maintenance windows
+      `);
       return;
     }
 
@@ -96,7 +106,7 @@ class MaintenanceHandler {
     try {
       return await this.fetch(uri, payload);
     } catch (e) {
-      return this.log(chalk.red('Error: ', e));
+      return this.log(chalk.red('Error making request: ', e));
     }
   }
 }

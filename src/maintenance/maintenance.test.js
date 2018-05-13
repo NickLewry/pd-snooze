@@ -1,5 +1,5 @@
-const chalk = require('chalk');
 const MockDate = require('mockdate');
+const Table = require('cli-table');
 
 const Utils = require('../utils/utils');
 const Maintenance = require('./maintenance');
@@ -86,26 +86,23 @@ describe('Maintenance', () => {
 
   describe('listMaintenanceWindows', () => {
     it('lists out all open maintenance windows', async () => {
+      const table = new Table({
+        head: ['Id', 'Services', 'Maintenance-Start', 'Maintenance-End'],
+      });
       const maintenance = new Maintenance(utils, logSpy, fetchSpy);
+      const maintenanceWindowIds = await maintenance.getMaintenanceWindows();
       await maintenance.listMaintenanceWindows();
-      expect(logSpy).toBeCalledWith([
-        {
-          id: '1234',
-          start_time: '2018-03-20T16:43:48.851Z',
-          end_time: '2018-03-20T17:43:48.851Z',
-          services: {
-            summary: 'config-service',
-          },
-        },
-        {
-          id: '5678',
-          start_time: '2018-03-20T12:43:48.851Z',
-          end_time: '2018-03-20T13:43:48.851Z',
-          services: {
-            summary: 'user-service',
-          },
-        },
-      ]);
+
+      maintenanceWindowIds.forEach(({ id, start_time, end_time, services }) =>
+        table.push([
+          id,
+          services.map(service => service.summary).join(', '),
+          start_time,
+          end_time,
+        ])
+      );
+
+      expect(logSpy).toBeCalledWith(table.toString());
     });
   });
 

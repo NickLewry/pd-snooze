@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const Table = require('cli-table');
 
 class Services {
   constructor(
@@ -21,9 +22,9 @@ class Services {
     if (validatedService[0]) return validatedService;
 
     this.log(
-      chalk.red(
-        `Unknown service *** ${name} ***, pass flag --ls to list available services`
-      )
+      chalk.red(`
+      Unknown service [${name}], to output available services run: pd-snooze list --services
+      `)
     );
   }
 
@@ -39,8 +40,10 @@ class Services {
   }
 
   async listServices() {
+    const table = new Table();
     const services = await this.getServices();
-    this.log(services);
+    services.forEach(service => table.push(service));
+    this.log(table.toString());
   }
 }
 

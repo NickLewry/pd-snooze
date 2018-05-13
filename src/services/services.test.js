@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const Table = require('cli-table');
 
 const Services = require('./services');
 const Utils = require('../utils/utils');
@@ -48,9 +49,9 @@ describe('Services', () => {
         services.validateService(serviceData, 'invalid-name')
       ).toBeUndefined();
       expect(logSpy).toBeCalledWith(
-        chalk.red(
-          `Unknown service *** invalid-name ***, pass flag --ls to list available services`
-        )
+        chalk.red(`
+      Unknown service [invalid-name], to output available services run: pd-snooze list --services
+      `)
       );
     });
   });
@@ -103,22 +104,11 @@ describe('Services', () => {
           services: serviceData,
         }),
       }));
+      const table = new Table();
       const services = new Services(utils, logSpy, fetchSpy);
       await services.listServices();
-      expect(logSpy).toBeCalledWith([
-        {
-          name: 'config-service',
-          id: 'config-id',
-        },
-        {
-          name: 'analytics-service',
-          id: 'analytics-id',
-        },
-        {
-          name: 'user-service',
-          id: 'user-id',
-        },
-      ]);
+      serviceData.forEach(service => table.push(service));
+      expect(logSpy).toBeCalledWith(table.toString());
     });
   });
 });

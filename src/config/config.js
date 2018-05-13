@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+
 const log = require('../utils/log');
 
 class Config {
@@ -31,17 +32,18 @@ class Config {
           };
           const config = JSON.parse(data);
 
-          Object.keys(mappedConfig).forEach((option) => {
+          Object.keys(mappedConfig).forEach(option => {
             if (mappedConfig[option] && config[option]) {
               config[option] = mappedConfig[option];
             }
           });
 
-         this.writeCredentials(config).then(resolve).catch(reject)
+          this.writeCredentials(config)
+            .then(resolve)
+            .catch(reject);
         }
       );
-    })
-
+    });
   }
 
   getConfig() {
@@ -71,7 +73,7 @@ class Config {
           resolve(data);
         }
       );
-    })
+    });
   }
 }
 

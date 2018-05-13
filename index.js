@@ -11,7 +11,6 @@ const Snooze = require('./src/snooze/snooze');
 const config = new Config();
 
 if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
-  program.version('2.0.0', '-v, --version');
 
   program
     .command('set-config')
@@ -33,8 +32,6 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     });
 } else {
   const snooze = new Snooze();
-
-  program.version('2.0.0', '-v, --version');
 
   program
     .command('set-config')
@@ -66,9 +63,7 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
 
   program
     .command('update-config')
-    .description(
-      'Update single or multiple values in the config.'
-    )
+    .description('Update single or multiple values in the config.')
     .option('--apikey <APIKEY>', 'your apiKey')
     .option('--email <EMAIL>', 'your email')
     .option('--timezone <TIMEZONE>', 'your time-zone')
@@ -173,6 +168,7 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     });
 }
 
+program.version('2.1.0', '-v, --version');
 program.on('--help', () => help());
 program.parse(process.argv);
 
