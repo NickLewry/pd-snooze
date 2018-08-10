@@ -9,12 +9,12 @@ const help = () => {
   Setup:
   
   example:
-    pd-snooze set-config --apiKey example-api-key --email email@company.org --timezone Europe/London
+    pd-snooze set-config --apikey example-api-key --email email@company.org --timezone Europe/London
   
   Usage:
     
-    pd-snooze set-config --apiKey <APIKEY> --email <EMAIL> --timezone <TIMEZONE>            Sets config
-    pd-snooze update-config [--apiKey <APIKEY>] [--email <EMAIL>] [--timezone <TIMEZONE>]   Updates single or multiple values in config
+    pd-snooze set-config --apikey <APIKEY> --email <EMAIL> --timezone <TIMEZONE>            Sets config
+    pd-snooze update-config [--apikey <APIKEY>] [--email <EMAIL>] [--timezone <TIMEZONE>]   Updates single or multiple values in config
     pd-snooze current-config                                                                Output current config
     pd-snooze list -s || --services                                                         Output available services
     pd-snooze list -m || --maintenance                                                      Output open maintenance windows   

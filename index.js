@@ -168,7 +168,7 @@ if (!fs.existsSync(path.join(homedir, '.pd-snooze'))) {
     });
 }
 
-program.version('2.2.0', '-v, --version');
+program.version('2.2.1', '-v, --version');
 program.on('--help', () => help());
 program.parse(process.argv);
 
