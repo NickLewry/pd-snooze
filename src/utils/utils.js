@@ -1,6 +1,6 @@
 class Utils {
-  constructor(config = require('../../config/credentials.json')) {
-    this.config = config;
+  constructor(Config = require('../config/config')) {
+    this.config = new Config();
     this.buildRequest = this.buildRequest.bind(this);
   }
 
@@ -26,10 +26,14 @@ class Utils {
     };
   }
 
-  buildRequest({ type, maintenanceServices, id, duration }) {
+  async buildRequest({ type, maintenanceServices, id, duration }) {
+    const userConfig = await this.config.getConfig();
+    const config = JSON.parse(userConfig);
+
     const qs = {
-      time_zone: this.config.timeZone,
+      time_zone: config.timeZone,
       filter: 'open',
+      limit: '100',
     };
 
     const options = {
@@ -61,8 +65,8 @@ class Utils {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/vnd.pagerduty+json;version=2',
-        Authorization: `Token token=${this.config.apiKey}`,
-        From: this.config.email,
+        Authorization: `Token token=${config.apiKey}`,
+        From: config.email,
       },
     };
 

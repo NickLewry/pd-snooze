@@ -3,12 +3,15 @@ const Table = require('cli-table');
 
 const Services = require('./services');
 const Utils = require('../utils/utils');
+const Config = require('../config/config');
 
 describe('Services', () => {
-  const utils = new Utils({
+  const utils = new Utils();
+  const config = new Config();
+  config.setConfig({
     email: 'test-email',
-    apiKey: 'test-apiKey',
-    timeZone: 'Europe/London',
+    apikey: 'test-apiKey',
+    timezone: 'Europe/London',
   });
 
   const serviceData = [
@@ -90,7 +93,7 @@ describe('Services', () => {
       await services.getServices();
       expect(logSpy).toBeCalledWith(
         chalk.red(
-          'Error retrieving services: TypeError: request.json is not a function'
+          'Error retrieving services, please ensure all config values are correct: TypeError: request.json is not a function'
         )
       );
     });

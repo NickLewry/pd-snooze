@@ -1,5 +1,7 @@
 const MockDate = require('mockdate');
+
 const Utils = require('./utils');
+const Config = require('../config/config');
 
 describe('Utils', () => {
   describe('buildQueryString', () => {
@@ -7,10 +9,11 @@ describe('Utils', () => {
       const queryObject = {
         time_zone: 'Europe/London',
         filter: 'open',
+        limit: '100',
       };
 
       expect(Utils.buildQueryString(queryObject)).toBe(
-        '?time_zone=Europe/London&filter=open'
+        '?time_zone=Europe/London&filter=open&limit=100'
       );
     });
 
@@ -60,14 +63,16 @@ describe('Utils', () => {
     let utils;
 
     beforeEach(() => {
-      utils = new Utils({
+      utils = new Utils();
+      const config = new Config();
+      config.setConfig({
         email: 'test-email',
-        apiKey: 'test-api-key',
-        timeZone: 'Europe/London',
+        apikey: 'test-api-key',
+        timezone: 'Europe/London',
       });
     });
-    it('builds the correct GET request for listing all services', () => {
-      expect(utils.buildRequest({ type: 'services' })).toEqual({
+    it('builds the correct GET request for listing all services', async () => {
+      expect(await utils.buildRequest({ type: 'services' })).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
           Authorization: 'Token token=test-api-key',
@@ -76,12 +81,12 @@ describe('Utils', () => {
         },
         method: 'GET',
         uri:
-          'https://api.pagerduty.com/services?time_zone=Europe/London&filter=open',
+          'https://api.pagerduty.com/services?time_zone=Europe/London&filter=open&limit=100',
       });
     });
 
-    it('builds the correct GET request for listing all maintenance windows', () => {
-      expect(utils.buildRequest({ type: 'maintenance' })).toEqual({
+    it('builds the correct GET request for listing all maintenance windows', async () => {
+      expect(await utils.buildRequest({ type: 'maintenance' })).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
           Authorization: 'Token token=test-api-key',
@@ -90,11 +95,11 @@ describe('Utils', () => {
         },
         method: 'GET',
         uri:
-          'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
+          'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open&limit=100',
       });
     });
 
-    it('builds the correct POST request for creating a maintenance window with a stringified payload', () => {
+    it('builds the correct POST request for creating a maintenance window with a stringified payload', async () => {
       const maintenanceServices = [
         {
           name: 'config-service',
@@ -106,7 +111,7 @@ describe('Utils', () => {
         },
       ];
       expect(
-        utils.buildRequest({ type: 'start', maintenanceServices })
+        await utils.buildRequest({ type: 'start', maintenanceServices })
       ).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
@@ -117,15 +122,15 @@ describe('Utils', () => {
         json: true,
         method: 'POST',
         uri:
-          'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
+          'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open&limit=100',
         body:
           '{"maintenance_window":{"type":"maintenance_window","start_time":"2018-03-20T16:43:48.851Z","end_time":"2018-03-20T17:13:48.851Z","services":[{"name":"config-service","id":"configServiceId"},{"name":"analytics","id":"analyticsId"}]}}',
       });
     });
 
-    it('builds the correct DELETE request for ending a maintenance window', () => {
+    it('builds the correct DELETE request for ending a maintenance window', async () => {
       expect(
-        utils.buildRequest({ type: 'end', id: 'testMaintenaceWindow' })
+        await utils.buildRequest({ type: 'end', id: 'testMaintenaceWindow' })
       ).toEqual({
         headers: {
           Accept: 'application/vnd.pagerduty+json;version=2',
@@ -135,7 +140,7 @@ describe('Utils', () => {
         },
         method: 'DELETE',
         uri:
-          'https://api.pagerduty.com/maintenance_windows/testMaintenaceWindow?time_zone=Europe/London&filter=open',
+          'https://api.pagerduty.com/maintenance_windows/testMaintenaceWindow?time_zone=Europe/London&filter=open&limit=100',
       });
     });
   });

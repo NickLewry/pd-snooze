@@ -18,7 +18,7 @@ class MaintenanceHandler {
   }
 
   async getMaintenanceWindows() {
-    const payload = this.utils.buildRequest({ type: 'maintenance' });
+    const payload = await this.utils.buildRequest({ type: 'maintenance' });
     const request = await this.makeRequest(payload.uri, payload);
 
     if (request && request.json) {
@@ -59,7 +59,7 @@ class MaintenanceHandler {
 
     if (!servicesPayload) return;
 
-    const maintenancePayload = this.utils.buildRequest({
+    const maintenancePayload = await this.utils.buildRequest({
       duration,
       type: 'start',
       maintenanceServices: servicesPayload.map(({ id }) => ({
@@ -93,7 +93,10 @@ class MaintenanceHandler {
 
     await Promise.all(
       openWindows.map(async ({ id }) => {
-        const maintenancePayload = this.utils.buildRequest({ type: 'end', id });
+        const maintenancePayload = await this.utils.buildRequest({
+          type: 'end',
+          id,
+        });
         return await this.makeRequest(
           maintenancePayload.uri,
           maintenancePayload

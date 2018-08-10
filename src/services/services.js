@@ -29,13 +29,18 @@ class Services {
   }
 
   async getServices() {
-    const payload = this.utils.buildRequest({ type: 'services' });
+    const payload = await this.utils.buildRequest({ type: 'services' });
     try {
       const request = await this.fetch(payload.uri, payload);
       const { services } = await request.json();
       return services.map(({ name, id }) => ({ name, id }));
     } catch (e) {
-      this.log(chalk.red('Error retrieving services:', e));
+      this.log(
+        chalk.red(
+          'Error retrieving services, please ensure all config values are correct:',
+          e
+        )
+      );
     }
   }
 

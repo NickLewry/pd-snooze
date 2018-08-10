@@ -3,11 +3,18 @@ const Table = require('cli-table');
 
 const Utils = require('../utils/utils');
 const Maintenance = require('./maintenance');
+const Config = require('../config/config');
 
 describe('Maintenance', () => {
   let utils;
   let logSpy;
   let fetchSpy = jest.fn();
+  const config = new Config();
+  config.setConfig({
+    email: 'test-email',
+    apikey: 'test-apiKey',
+    timezone: 'Europe/London',
+  });
 
   fetchSpy.mockReturnValue({
     json: () => ({
@@ -56,11 +63,7 @@ describe('Maintenance', () => {
   beforeEach(() => {
     fetchSpy.mockClear();
     logSpy = jest.fn();
-    utils = new Utils({
-      email: 'test-email',
-      apiKey: 'test-apiKey',
-      timeZone: 'Europe/London',
-    });
+    utils = new Utils();
   });
 
   describe('getMaintenanceWindows', () => {
@@ -114,7 +117,7 @@ describe('Maintenance', () => {
       const maintenance = new Maintenance(utils, logSpy, fetchSpy);
       await maintenance.startMaintenance({ value: 'all' });
       expect(fetchSpy).toBeCalledWith(
-        'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
+        'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open&limit=100',
         {
           body:
             '{"maintenance_window":{"type":"maintenance_window","start_time":"2018-04-20T16:43:48.851Z","end_time":"2018-04-20T17:13:48.851Z","services":[{"id":"config-id","type":"service_reference"},{"id":"analytics-id","type":"service_reference"},{"id":"user-id","type":"service_reference"}]}}',
@@ -127,7 +130,7 @@ describe('Maintenance', () => {
           json: true,
           method: 'POST',
           uri:
-            'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
+            'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open&limit=100',
         }
       );
     });
@@ -141,7 +144,7 @@ describe('Maintenance', () => {
 
       expect(fetchSpy.mock.calls.length).toBe(2);
       expect(fetchSpy.mock.calls[1]).toEqual([
-        'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
+        'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open&limit=100',
         {
           body:
             '{"maintenance_window":{"type":"maintenance_window","start_time":"2018-04-20T16:43:48.851Z","end_time":"2018-04-20T17:13:48.851Z","services":[{"id":"user-id","type":"service_reference"}]}}',
@@ -154,7 +157,7 @@ describe('Maintenance', () => {
           json: true,
           method: 'POST',
           uri:
-            'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open',
+            'https://api.pagerduty.com/maintenance_windows?time_zone=Europe/London&filter=open&limit=100',
         },
       ]);
     });
@@ -167,7 +170,7 @@ describe('Maintenance', () => {
 
       expect(fetchSpy.mock.calls.length).toBe(3);
       expect(fetchSpy.mock.calls[1]).toEqual([
-        'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open',
+        'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open&limit=100',
         {
           headers: {
             Accept: 'application/vnd.pagerduty+json;version=2',
@@ -177,12 +180,12 @@ describe('Maintenance', () => {
           },
           method: 'DELETE',
           uri:
-            'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open',
+            'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open&limit=100',
         },
       ]);
 
       expect(fetchSpy.mock.calls[2]).toEqual([
-        'https://api.pagerduty.com/maintenance_windows/5678?time_zone=Europe/London&filter=open',
+        'https://api.pagerduty.com/maintenance_windows/5678?time_zone=Europe/London&filter=open&limit=100',
         {
           headers: {
             Accept: 'application/vnd.pagerduty+json;version=2',
@@ -192,7 +195,7 @@ describe('Maintenance', () => {
           },
           method: 'DELETE',
           uri:
-            'https://api.pagerduty.com/maintenance_windows/5678?time_zone=Europe/London&filter=open',
+            'https://api.pagerduty.com/maintenance_windows/5678?time_zone=Europe/London&filter=open&limit=100',
         },
       ]);
     });
@@ -203,7 +206,7 @@ describe('Maintenance', () => {
 
       expect(fetchSpy.mock.calls.length).toBe(2);
       expect(fetchSpy.mock.calls[1]).toEqual([
-        'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open',
+        'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open&limit=100',
         {
           headers: {
             Accept: 'application/vnd.pagerduty+json;version=2',
@@ -213,7 +216,7 @@ describe('Maintenance', () => {
           },
           method: 'DELETE',
           uri:
-            'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open',
+            'https://api.pagerduty.com/maintenance_windows/1234?time_zone=Europe/London&filter=open&limit=100',
         },
       ]);
     });

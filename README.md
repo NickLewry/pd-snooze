@@ -5,6 +5,10 @@ A command line tool to put services in and out of maintenance mode in PagerDuty.
 ### Requirements:
 **Node version: >= 8.**
 
+#### Timezones
+
+To esure you enter your timezone in the correct format please refer to this list of timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). 
+
 ### Install:
 #### Yarn
 ```

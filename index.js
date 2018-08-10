@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const program = require('commander');
+const homedir = require('os').homedir();
 
 const help = require('./src/help');
 const Config = require('./src/config/config');
@@ -10,8 +11,7 @@ const Snooze = require('./src/snooze/snooze');
 
 const config = new Config();
 
-if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
-
+if (!fs.existsSync(path.join(homedir, '.pd-snooze'))) {
   program
     .command('set-config')
     .description('Create the config required to interact with PagerDuty api')
@@ -58,7 +58,7 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     .command('current-config')
     .description('Output current config')
     .action(() => {
-      config.getConfig();
+      config.getConfig().then(res => console.log(res));
     });
 
   program
@@ -168,7 +168,7 @@ if (!fs.existsSync(path.join(__dirname, 'config/credentials.json'))) {
     });
 }
 
-program.version('2.1.0', '-v, --version');
+program.version('2.2.0', '-v, --version');
 program.on('--help', () => help());
 program.parse(process.argv);
 
