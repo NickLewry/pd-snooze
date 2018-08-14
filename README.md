@@ -23,7 +23,7 @@ npm install -g pd-snooze
 
 ### Setup:
 ```
- pd-snooze set-config --apiKey YOUR_APIKEY --email YOUR_EMAIL --timezone YOUR_TIMEZONE
+ pd-snooze set-config --apikey YOUR_APIKEY --email YOUR_EMAIL --timezone YOUR_TIMEZONE
 ```
 
 
@@ -52,7 +52,7 @@ pd-snooze -h || --help
 ```
 ### Set config:
 ```
-pd-snooze set-config --apiKey example-api-key --email email@company.org --timezone Europe/London
+pd-snooze set-config --apikey example-api-key --email email@company.org --timezone Europe/London
 ```
 ### Example Usage:
 #### Output current config:
@@ -62,7 +62,7 @@ pd-snooze current-config
 ```
 #### Update config:
 ```
-pd-snooze update-config --apiKey <NEW_APIKEY>
+pd-snooze update-config --apikey <NEW_APIKEY>
 ```
 #### Output services:
 ```
