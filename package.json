@@ -1,6 +1,6 @@
 {
   "name": "pd-snooze",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "PagerDuty maintenance cli",
   "main": "index.js",
   "author": "NickLewry",
